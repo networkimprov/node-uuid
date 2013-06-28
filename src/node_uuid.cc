@@ -6,6 +6,8 @@ using namespace v8;
 using namespace node;
 
 Handle<Value> GenerateStringLower(const Arguments& args) {
+  if (args.Length() != 0)
+    return ThrowException(Exception::TypeError(String::New("arguments are ()")));
   HandleScope scope;
   uuid_t aId;
   char aIdStr[37];
