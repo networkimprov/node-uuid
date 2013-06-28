@@ -1,9 +1,24 @@
 #include <node.h>
 #include <v8.h>
 #include <uuid/uuid.h>
+#include <node_buffer.h>
+#include <cstring>
 
 using namespace v8;
 using namespace node;
+
+Handle<Value> UuidToBuffer(uuid_t uu) {
+  return Buffer::New((const char *)uu, 16)->handle_;
+}
+
+bool IsValidUuid(Handle<Value> uu) {
+  return (Buffer::HasInstance(uu) && Buffer::Length(uu) == 16);
+}
+
+void BufferToUuid(Handle<Value> src, uuid_t &dst) {
+  memcpy(dst, Buffer::Data(src), 16);
+}
+
 
 Handle<Value> GenerateStringLower(const Arguments& args) {
   if (args.Length() != 0)
